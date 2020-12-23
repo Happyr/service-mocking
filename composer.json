@@ -11,8 +11,8 @@
         }
     ],
     "require": {
-        "php": "^7.2",
-        "ocramius/proxy-manager": "^2.2",
+        "php": ">=7.2",
+        "friendsofphp/proxy-manager-lts": "^1.0",
         "symfony/config": "^4.4 || ^5.1",
         "symfony/dependency-injection": "^4.4 || ^5.1",
         "symfony/http-kernel": "^4.4 || ^5.1"

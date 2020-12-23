@@ -1,47 +1,12 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$name\\)\\: Unexpected token \"\\$name\", expected type at offset 77$#"
+			message: "#^Parameter \\#1 \\$autoload_function of function spl_autoload_register expects callable\\(string\\)\\: void, ProxyManager\\\\Autoloader\\\\AutoloaderInterface given\\.$#"
 			count: 1
-			path: src/Service/DistributionManager.php
+			path: src/DependencyInjection/CompilerPass/ProxyServiceWithMockPass.php
 
 		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$value\\)\\: Unexpected token \"\\$value\", expected type at offset 97$#"
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition\\:\\:children\\(\\)\\.$#"
 			count: 1
-			path: src/Service/DistributionManager.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(array &\\$values   must be of form array\\(\\$value\\=\\>\\$frequency\\)\\)\\: Unexpected token \"&\", expected variable at offset 58$#"
-			count: 1
-			path: src/Service/DistributionManager.php
-
-		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<HappyrServiceMockingBundle\\:Summary\\>\\:\\:findOneByName\\(\\)\\.$#"
-			count: 1
-			path: src/Service/DistributionManager.php
-
-		-
-			message: "#^Parameter \\#1 \\$className of method Doctrine\\\\Persistence\\\\ObjectManager\\:\\:getRepository\\(\\) expects class\\-string\\<HappyrServiceMockingBundle\\:Summary\\>, string given\\.$#"
-			count: 1
-			path: src/Service/DistributionManager.php
-
-		-
-			message: "#^Parameter \\#1 \\$className of method Doctrine\\\\Persistence\\\\ObjectManager\\:\\:getRepository\\(\\) expects class\\-string\\<HappyrServiceMockingBundle\\:Fragment\\>, string given\\.$#"
-			count: 1
-			path: src/Service/DistributionManager.php
-
-		-
-			message: "#^Call to method setCumulativeFrequency\\(\\) on an unknown class HappyrServiceMockingBundle\\:Fragment\\.$#"
-			count: 1
-			path: src/Service/DistributionManager.php
-
-		-
-			message: "#^Call to method setFrequency\\(\\) on an unknown class HappyrServiceMockingBundle\\:Fragment\\.$#"
-			count: 1
-			path: src/Service/DistributionManager.php
-
-		-
-			message: "#^Call to method setValue\\(\\) on an unknown class HappyrServiceMockingBundle\\:Fragment\\.$#"
-			count: 1
-			path: src/Service/DistributionManager.php
+			path: src/DependencyInjection/Configuration.php
 

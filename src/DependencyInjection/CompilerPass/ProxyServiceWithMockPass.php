@@ -3,19 +3,12 @@
 namespace Happyr\ServiceMocking\DependencyInjection\CompilerPass;
 
 use ProxyManager\Configuration;
-use ProxyManager\Factory\AccessInterceptorValueHolderFactory;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 use ProxyManager\FileLocator\FileLocator;
-use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
 use ProxyManager\Proxy\LazyLoadingInterface;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-
-use ProxyManager\Factory\AccessInterceptorValueHolderFactory as Factory;
-
 
 class ProxyServiceWithMockPass implements CompilerPassInterface
 {
@@ -27,7 +20,7 @@ class ProxyServiceWithMockPass implements CompilerPassInterface
             $serviceIds[] = $id;
         }
 
-        $proxiesDirectory = $container->getParameter('kernel.cache_dir') . '/happyr_service_mock';
+        $proxiesDirectory = $container->getParameter('kernel.cache_dir').'/happyr_service_mock';
         @mkdir($proxiesDirectory);
 
         $config = new Configuration();
@@ -46,7 +39,6 @@ class ProxyServiceWithMockPass implements CompilerPassInterface
             }
 
             $initializer = function (&$wrappedObject, LazyLoadingInterface $proxy, $method, array $parameters, &$initializer) {
-
                 $initializer = null; // disable initialization
                 $foobar = 'foobar';
 

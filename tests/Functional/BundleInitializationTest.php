@@ -4,18 +4,11 @@ declare(strict_types=1);
 
 namespace Happyr\ServiceMocking\Tests\Functional;
 
-use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
-use Happyr\ServiceMocking\HappyrServiceMocking;
 use Happyr\ServiceMocking\HappyrServiceMockingBundle;
-use Happyr\ServiceMocking\Service\Calculator;
-use Happyr\ServiceMocking\Service\DistributionManager;
-use Happyr\ServiceMocking\Service\StatisticsHelper;
 use Nyholm\BundleTest\BaseBundleTestCase;
 use Nyholm\BundleTest\CompilerPass\PublicServicePass;
 use ProxyManager\Proxy\VirtualProxyInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
-use Symfony\Component\HttpKernel\Log\Logger;
 
 class BundleInitializationTest extends BaseBundleTestCase
 {
@@ -47,7 +40,6 @@ class BundleInitializationTest extends BaseBundleTestCase
         $this->assertInstanceOf(Router::class, $service);
         $this->assertInstanceOf(VirtualProxyInterface::class, $service);
     }
-
 
     public function testInitEmptyBundle()
     {

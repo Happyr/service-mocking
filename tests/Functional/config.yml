@@ -1,0 +1,7 @@
+framework:
+    router:
+        utf8: true
+
+happyr_service_mocking:
+    services:
+        - 'router'

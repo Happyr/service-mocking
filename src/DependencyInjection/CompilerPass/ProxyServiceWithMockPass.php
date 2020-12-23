@@ -38,11 +38,8 @@ class ProxyServiceWithMockPass implements CompilerPassInterface
                 throw new \LogicException(sprintf('[HappyrServiceMocking] Service or alias with id "%s" does not exist.', $serviceId));
             }
 
-            $initializer = function (&$wrappedObject, LazyLoadingInterface $proxy, $method, array $parameters, &$initializer) {
-                $initializer = null; // disable initialization
-                $foobar = 'foobar';
-
-                return true; // make sure this callable is always called
+            $initializer = function () {
+                return true;
             };
 
             $proxy = $factory->createProxy($definition->getClass(), $initializer);

@@ -2,8 +2,8 @@
 
 namespace Happyr\ServiceMocking\DependencyInjection\CompilerPass;
 
+use Happyr\ServiceMocking\Generator\GeneratorFactory;
 use ProxyManager\Configuration;
-use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 use ProxyManager\FileLocator\FileLocator;
 use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -26,7 +26,7 @@ class ProxyServiceWithMockPass implements CompilerPassInterface
         $config->setGeneratorStrategy(new FileWriterGeneratorStrategy(new FileLocator($proxiesDirectory)));
         $config->setProxiesTargetDir($proxiesDirectory);
         \spl_autoload_register($config->getProxyAutoloader());
-        $factory = new LazyLoadingValueHolderFactory($config);
+        $factory = new GeneratorFactory($config);
 
         foreach ($serviceIds as $serviceId) {
             if ($container->hasDefinition($serviceId)) {

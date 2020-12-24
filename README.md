@@ -1,6 +1,6 @@
 # Happyr Service Mocking
 
-[![Latest Version](https://img.shields.io/github/release/Happyr/ServiceMocking.svg?style=flat-square)](https://github.com/Happyr/ServiceMocking/releases)
+[![Latest Version](https://img.shields.io/github/release/Happyr/service-mocking.svg?style=flat-square)](https://github.com/Happyr/service-mocking/releases)
 [![Total Downloads](https://img.shields.io/packagist/dt/happyr/service-mocking.svg?style=flat-square)](https://packagist.org/packages/happyr/service-mocking)
 
 You want your tests to run as quick as possible, so you build your container once

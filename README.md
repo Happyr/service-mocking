@@ -86,3 +86,19 @@ class MyTest extends WebTestCase
         ServiceMock::clear($apiClient, 'show');
     }
 }
+
+## Internal
+
+So how is this magic working?
+
+When the container is built a new proxy class is generated from your service definition.
+The proxy class acts and behaves just as the original. But on each method call if
+checks the `ProxyDefinition` if a custom behavior have been added.
+
+With help from static properties, the `ProxyDefinition` will be remembered even if
+the Kernel is rebooted.
+
+## Limitations
+
+This trick will not work if you have two different PHP processes, ie you are running
+your tests with Panther, Selenium etc.

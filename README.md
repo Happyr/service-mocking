@@ -1,7 +1,104 @@
 # Happyr Service Mocking
 
 [![Latest Version](https://img.shields.io/github/release/Happyr/ServiceMockingBundle.svg?style=flat-square)](https://github.com/Happyr/ServiceMockingBundle/releases)
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/95c8e1d1-2b53-45db-a49d-ae772c5f270d/mini.png)](https://insight.sensiolabs.com/projects/95c8e1d1-2b53-45db-a49d-ae772c5f270d)
 [![Total Downloads](https://img.shields.io/packagist/dt/happyr/service-mocking.svg?style=flat-square)](https://packagist.org/packages/happyr/service-mocking)
 
+You want your tests to run as quick as possible, so you build your container once
+and let all your tests run on that built container. That is great!
+
+However, when your service container is built, it is immutable. This causes problems
+when you want to mock a service during a functional test. There is no way for you
+to change the object in the service container.
+
+Using this bundle, you can mark some services as "mockable", that will allow you
+to define a new custom behavior for a method in that service. If no custom behavior
+is defined, the service works as normal.
+
+## Install
+
+```cli
+composer require --dev happyr/service-mocking
+```
+
+Make sure to enable the bundle for your test environment only:
+
+```php
+// config/bundles.php
+
+<?php
+
+return [
+    // ...
+    Happyr\ServiceMocking\HappyrServiceMockingBundle::class => ['test' => true],
+];
+```
+
+## Configure services
+
+You need to tell the bundle what services you want to mock. That could be done with
+the service tag `happyr_service_mock` or by defining a list of service ids:
+
+```yaml
+# config/packages/test/happyr_service_mocking.yaml
+
+happyr_service_mocking:
+    services:
+        - 'App\AcmeApiClient'
+        - 'App\Some\OtherService'
+```
+
+## Usage
+
+```php
+use App\AcmeApiClient;
+use Happyr\ServiceMocking\ServiceMock;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+
+class MyTest extends WebTestCase
+{
+    public function testFoo()
+    {
+        // ...
+
+        $apiClient = self::$container->get(AcmeApiClient::class);
+
+        // For all calls to $apiClient->show()
+        ServiceMock::all($apiClient, 'show', function ($id) {
+            // $id here is the same that is passed to $apiClient->show('123')
+            return ['id'=>$id, 'name'=>'Foobar'];
+        });
+
+        // For only the next call to $apiClient->delete()
+        ServiceMock::next($apiClient, 'delete', function () {
+            return true
+        });
+
+        // This will queue a new callable for $apiClient->delete()
+        ServiceMock::next($apiClient, 'delete', function () {
+            throw new \InvalidArgument('Item cannot be deleted again');
+        });
+
+        // ...
+        self::$client->request(...);
+
+        // To make sure the ServiceMock::all() is not affecting next test
+        ServiceMock::clear($apiClient, 'show');
+    }
+}
+```
+
+## Internal
+
+So how is this magic working?
+
+When the container is built a new proxy class is generated from your service definition.
+The proxy class acts and behaves just as the original. But on each method call if
+checks the `ProxyDefinition` if a custom behavior have been added.
+
+With help from static properties, the `ProxyDefinition` will be remembered even if
+the Kernel is rebooted.
+
+## Limitations
+
+This trick will not work if you have two different PHP processes, ie you are running
+your tests with Panther, Selenium etc.

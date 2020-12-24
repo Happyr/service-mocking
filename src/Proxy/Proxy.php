@@ -22,7 +22,7 @@ class Proxy
     {
         $func = $this->definition->getMethodCallable($method);
         if (null === $func) {
-            return $this->definition->getOriginalObject()->{$method}(...$args);
+            return $this->definition->getObject()->{$method}(...$args);
         } else {
             return call_user_func_array($func, $args);
         }

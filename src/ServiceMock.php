@@ -13,6 +13,18 @@ class ServiceMock
     private static $definitions = [];
 
     /**
+     * Proxy all method calls from $proxy to $replacement.
+     */
+    public static function swap($proxy, object $replacement): void
+    {
+        $definition = self::getDefinition($proxy);
+        $definition->swap($replacement);
+
+        // Initialize now so we can use it directly.
+        self::initializeProxy($proxy);
+    }
+
+    /**
      * Make the next call to $method name execute the $func.
      */
     public static function next($proxy, string $methodName, callable ...$func): void

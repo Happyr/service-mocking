@@ -14,10 +14,32 @@ class ProxyDefinition
     private $originalObject;
     private $methods = [];
     private $methodsQueue = [];
+    private $replacement;
 
     public function __construct(object $originalObject)
     {
         $this->originalObject = $originalObject;
+    }
+
+    public function swap(object $replacement): void
+    {
+        $this->clear();
+        $this->replacement = $replacement;
+    }
+
+    public function clear(): void
+    {
+        $this->methods = [];
+        $this->methodsQueue = [];
+        $this->replacement = null;
+    }
+
+    /**
+     * Get an object to execute a method on.
+     */
+    public function getObject(): object
+    {
+        return $this->replacement ?? $this->originalObject;
     }
 
     public function getOriginalObject(): object
@@ -46,6 +68,10 @@ class ProxyDefinition
 
     public function addMethod(string $method, callable $func): void
     {
+        if ($this->replacement) {
+            throw new \LogicException('Cannot add a method after added a replacement');
+        }
+
         $this->methods[$method] = $func;
     }
 
@@ -56,6 +82,10 @@ class ProxyDefinition
 
     public function appendMethodsQueue(string $method, callable $func): void
     {
+        if ($this->replacement) {
+            throw new \LogicException('Cannot add a method after added a replacement');
+        }
+
         $this->methodsQueue[$method][] = $func;
     }
 

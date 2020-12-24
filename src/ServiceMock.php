@@ -51,9 +51,18 @@ class ServiceMock
     }
 
     /**
+     * Reset this service.
+     */
+    public static function clear($proxy): void
+    {
+        $definition = self::getDefinition($proxy);
+        $definition->clear()
+    }
+
+    /**
      * Remove all functions related to $methodName.
      */
-    public static function clear($proxy, string $methodName): void
+    public static function clearMethod($proxy, string $methodName): void
     {
         $definition = self::getDefinition($proxy);
         $definition->removeMethod($methodName);

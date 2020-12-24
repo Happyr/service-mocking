@@ -18,10 +18,13 @@ class ServiceMock
      */
     public static function next($proxy, string $methodName, callable ...$func): void
     {
-        $definition = self::initializeProxy($proxy);
+        $definition = self::getDefinition($proxy);
         foreach ($func as $f) {
-            $definition->addMethod($methodName, $f);
+            $definition->appendMethodsQueue($methodName, $f);
         }
+
+        // Initialize now so we can use it directly.
+        self::initializeProxy($proxy);
     }
 
     /**
@@ -29,8 +32,11 @@ class ServiceMock
      */
     public static function all($proxy, string $methodName, callable $func): void
     {
-        $definition = self::initializeProxy($proxy);
+        $definition = self::getDefinition($proxy);
         $definition->addMethod($methodName, $func);
+
+        // Initialize now so we can use it directly.
+        self::initializeProxy($proxy);
     }
 
     /**
@@ -38,7 +44,7 @@ class ServiceMock
      */
     public static function clear($proxy, string $methodName): void
     {
-        $definition = self::initializeProxy($proxy);
+        $definition = self::getDefinition($proxy);
         $definition->removeMethod($methodName);
         $definition->clearMethodsQueue($methodName);
     }
@@ -46,29 +52,32 @@ class ServiceMock
     /**
      * @param LazyLoadingInterface $proxy
      */
-    public static function initializeProxy($proxy)
+    public static function initializeProxy(LazyLoadingInterface $proxy): void
+    {
+        $initializer = function (&$wrappedObject, LazyLoadingInterface $proxy, $calledMethod, array $parameters, &$nextInitializer) {
+            $nextInitializer = null;
+            $wrappedObject = new Proxy(self::getDefinition($proxy));
+
+            return true;
+        };
+
+        $proxy->setProxyInitializer($initializer);
+    }
+
+    /**
+     * @param LazyLoadingInterface $proxy
+     */
+    private static function getDefinition($proxy): ProxyDefinition
     {
         if (!$proxy instanceof LazyLoadingInterface) {
             throw new \InvalidArgumentException(\sprintf('Object of class "%s" is not a proxy. Did you mark this service correctly?', get_class($proxy)));
         }
 
-        $key = spl_object_hash($proxy);
-        if (isset(self::$definitions[$key])) {
-            $definition = self::$definitions[$key];
-        } else {
-            $definition = self::$definitions[$key] = new ProxyDefinition($proxy->getWrappedValueHolderValue());
+        $key = sha1(get_class($proxy));
+        if (!isset(self::$definitions[$key])) {
+            self::$definitions[$key] = new ProxyDefinition($proxy->getWrappedValueHolderValue());
         }
 
-        if ($proxy->getProxyInitializer() === null) {
-            $initializer = function (&$wrappedObject, LazyLoadingInterface $proxy, $calledMethod, array $parameters, &$nextInitializer) use ($definition) {
-                $nextInitializer = null;
-                $wrappedObject = new Proxy($definition);
-
-                return true;
-            };
-            $proxy->setProxyInitializer($initializer);
-        }
-
-        return $definition;
+        return self::$definitions[$key];
     }
 }

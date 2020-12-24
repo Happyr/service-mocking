@@ -25,7 +25,7 @@ class ProxyDefinition
     {
         return $this->originalObject;
     }
-    
+
     public function getMethodCallable(string $method): ?callable
     {
         if (isset($this->methodsQueue[$method])) {
@@ -57,7 +57,7 @@ class ProxyDefinition
 
     public function appendMethodsQueue(string $method, callable $func): void
     {
-        $this->methodsQueue[$method][] = $methodsQueue;
+        $this->methodsQueue[$method][] = $func;
     }
 
     public function clearMethodsQueue(string $method): void

@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-
 namespace Happyr\ServiceMocking;
 
-use Happyr\ServiceMocking\Proxy\ProxyDefinition;
 use Happyr\ServiceMocking\Proxy\Proxy;
+use Happyr\ServiceMocking\Proxy\ProxyDefinition;
 use ProxyManager\Proxy\LazyLoadingInterface;
 
 class ServiceMock
@@ -14,7 +13,7 @@ class ServiceMock
     private static $definitions = [];
 
     /**
-     * Make the next call to $method name execute the $func
+     * Make the next call to $method name execute the $func.
      */
     public static function next($proxy, string $methodName, callable ...$func): void
     {
@@ -28,7 +27,7 @@ class ServiceMock
     }
 
     /**
-     * All folloing calls $methodName will execute $func
+     * All folloing calls $methodName will execute $func.
      */
     public static function all($proxy, string $methodName, callable $func): void
     {
@@ -49,9 +48,6 @@ class ServiceMock
         $definition->clearMethodsQueue($methodName);
     }
 
-    /**
-     * @param LazyLoadingInterface $proxy
-     */
     public static function initializeProxy(LazyLoadingInterface $proxy): void
     {
         $initializer = function (&$wrappedObject, LazyLoadingInterface $proxy, $calledMethod, array $parameters, &$nextInitializer) {
@@ -69,7 +65,7 @@ class ServiceMock
      */
     private static function getDefinition($proxy): ProxyDefinition
     {
-        if (!$proxy instanceof LazyLoadingInterface) {
+        if (!$proxy instanceof LazyLoadingInterface || !method_exists($proxy, 'getWrappedValueHolderValue')) {
             throw new \InvalidArgumentException(\sprintf('Object of class "%s" is not a proxy. Did you mark this service correctly?', get_class($proxy)));
         }
 

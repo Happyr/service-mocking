@@ -4,7 +4,6 @@ namespace Happyr\ServiceMocking\DependencyInjection\CompilerPass;
 
 use Happyr\ServiceMocking\Generator\GeneratorFactory;
 use ProxyManager\Configuration;
-use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 use ProxyManager\FileLocator\FileLocator;
 use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;

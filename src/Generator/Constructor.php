@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Happyr\ServiceMocking\Generator;
 
+use function array_filter;
+use function array_map;
+use function implode;
 use Laminas\Code\Generator\Exception\InvalidArgumentException;
 use Laminas\Code\Generator\PropertyGenerator;
 use Laminas\Code\Reflection\MethodReflection;
@@ -13,16 +16,11 @@ use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManager\ProxyGenerator\Util\UnsetPropertiesGenerator;
 use ReflectionClass;
 use ReflectionMethod;
-
-use function array_filter;
-use function array_map;
-use function assert;
-use function implode;
 use function reset;
 use function var_export;
 
 /**
- * The `__construct` implementation for lazy loading proxies
+ * The `__construct` implementation for lazy loading proxies.
  */
 class Constructor extends MethodGenerator
 {
@@ -38,17 +36,17 @@ class Constructor extends MethodGenerator
             : new self('__construct');
 
         $constructor->setBody(
-            'static $reflection;' . "\n\n"
-            . 'if (! $this->' . $valueHolder->getName() . ') {' . "\n"
-            . '    $reflection = $reflection ?? new \ReflectionClass('
-            . var_export($originalClass->getName(), true)
-            . ");\n"
-            . '    $this->' . $valueHolder->getName() . ' = $reflection->newInstanceWithoutConstructor();' . "\n"
-            . UnsetPropertiesGenerator::generateSnippet(Properties::fromReflectionClass($originalClass), 'this')
-            . '}'
-            . ($originalConstructor ? self::generateOriginalConstructorCall($originalConstructor, $valueHolder) : '')
-            . "\n"
-            . '\Happyr\ServiceMocking\ServiceMock::initializeProxy($this);'
+            'static $reflection;'."\n\n"
+            .'if (! $this->'.$valueHolder->getName().') {'."\n"
+            .'    $reflection = $reflection ?? new \ReflectionClass('
+            .var_export($originalClass->getName(), true)
+            .");\n"
+            .'    $this->'.$valueHolder->getName().' = $reflection->newInstanceWithoutConstructor();'."\n"
+            .UnsetPropertiesGenerator::generateSnippet(Properties::fromReflectionClass($originalClass), 'this')
+            .'}'
+            .($originalConstructor ? self::generateOriginalConstructorCall($originalConstructor, $valueHolder) : '')
+            ."\n"
+            .'\Happyr\ServiceMocking\ServiceMock::initializeProxy($this);'
         );
 
         return $constructor;
@@ -59,17 +57,17 @@ class Constructor extends MethodGenerator
         PropertyGenerator $valueHolder
     ): string {
         return "\n\n"
-            . '$this->' . $valueHolder->getName() . '->' . $originalConstructor->getName() . '('
-            . implode(
+            .'$this->'.$valueHolder->getName().'->'.$originalConstructor->getName().'('
+            .implode(
                 ', ',
                 array_map(
                     static function (ParameterReflection $parameter): string {
-                        return ($parameter->isVariadic() ? '...' : '') . '$' . $parameter->getName();
+                        return ($parameter->isVariadic() ? '...' : '').'$'.$parameter->getName();
                     },
                     $originalConstructor->getParameters()
                 )
             )
-            . ');';
+            .');';
     }
 
     private static function getConstructor(ReflectionClass $class): ?MethodReflection

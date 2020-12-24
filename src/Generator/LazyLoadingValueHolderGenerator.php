@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Happyr\ServiceMocking\Generator;
 
+use function array_map;
+use function array_merge;
+use function func_get_arg;
+use function func_num_args;
 use InvalidArgumentException;
 use Laminas\Code\Generator\ClassGenerator;
 use Laminas\Code\Generator\MethodGenerator;
@@ -35,16 +39,11 @@ use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\GetWrappedValueHolderValue;
 use ReflectionClass;
 use ReflectionMethod;
-
-use function array_map;
-use function array_merge;
-use function func_get_arg;
-use function func_num_args;
 use function str_replace;
 use function substr;
 
 /**
- * Generator for proxies implementing {@see \ProxyManager\Proxy\VirtualProxyInterface}
+ * Generator for proxies implementing {@see \ProxyManager\Proxy\VirtualProxyInterface}.
  *
  * This is a 99% copy of ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator.
  * This class generates a different constructor.
@@ -70,7 +69,7 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
 
         CanProxyAssertion::assertClassCanBeProxied($originalClass);
 
-        $interfaces       = [VirtualProxyInterface::class];
+        $interfaces = [VirtualProxyInterface::class];
         $publicProperties = new PublicPropertiesMap(Properties::fromReflectionClass($originalClass));
 
         if ($originalClass->isInterface()) {
@@ -84,7 +83,7 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
         $classGenerator->addPropertyFromGenerator($initializer = new InitializerProperty());
         $classGenerator->addPropertyFromGenerator($publicProperties);
 
-        $skipDestructor  = ($proxyOptions['skipDestructor'] ?? false) && $originalClass->hasMethod('__destruct');
+        $skipDestructor = ($proxyOptions['skipDestructor'] ?? false) && $originalClass->hasMethod('__destruct');
         $excludedMethods = ProxiedMethodsFilter::DEFAULT_EXCLUDED;
 
         if ($skipDestructor) {
@@ -127,7 +126,7 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
         bool $fluentSafe
     ): callable {
         return static function (ReflectionMethod $method) use ($initializer, $valueHolder, $fluentSafe): LazyLoadingMethodInterceptor {
-            $byRef  = $method->returnsReference() ? '& ' : '';
+            $byRef = $method->returnsReference() ? '& ' : '';
             $method = LazyLoadingMethodInterceptor::generateMethod(
                 new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
                 $initializer,
@@ -135,16 +134,16 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
             );
 
             if ($fluentSafe) {
-                $valueHolderName = '$this->' . $valueHolder->getName();
-                $body            = $method->getBody();
-                $newBody         = str_replace('return ' . $valueHolderName, 'if (' . $valueHolderName . ' === $returnValue = ' . $byRef . $valueHolderName, $body);
+                $valueHolderName = '$this->'.$valueHolder->getName();
+                $body = $method->getBody();
+                $newBody = str_replace('return '.$valueHolderName, 'if ('.$valueHolderName.' === $returnValue = '.$byRef.$valueHolderName, $body);
 
                 if ($newBody !== $body) {
                     $method->setBody(
-                        substr($newBody, 0, -1) . ') {' . "\n"
-                        . '    return $this;' . "\n"
-                        . '}' . "\n\n"
-                        . 'return $returnValue;'
+                        substr($newBody, 0, -1).') {'."\n"
+                        .'    return $this;'."\n"
+                        .'}'."\n\n"
+                        .'return $returnValue;'
                     );
                 }
             }

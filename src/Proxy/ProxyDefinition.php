@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Happyr\ServiceMocking\Proxy;
 
 /**
- *
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  *
  * @internal
@@ -30,7 +29,7 @@ class ProxyDefinition
     {
         if (isset($this->methodsQueue[$method])) {
             $key = array_key_first($this->methodsQueue[$method]);
-            if ($key !== null) {
+            if (null !== $key) {
                 $func = $this->methodsQueue[$method][$key];
                 unset($this->methodsQueue[$method][$key]);
 

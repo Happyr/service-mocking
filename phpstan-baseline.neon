@@ -10,3 +10,8 @@ parameters:
 			count: 1
 			path: src/DependencyInjection/Configuration.php
 
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$proxyOptions$#"
+			count: 1
+			path: src/Generator/LazyLoadingValueHolderGenerator.php
+

@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 namespace Happyr\ServiceMocking\Generator;
 
-use Closure;
 use ProxyManager\Configuration;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
-use ProxyManager\Proxy\ValueHolderInterface;
-use ProxyManager\Proxy\VirtualProxyInterface;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 
 /**
- * Factory responsible of producing virtual proxy instances
+ * Factory responsible of producing virtual proxy instances.
  */
 class GeneratorFactory extends LazyLoadingValueHolderFactory
 {

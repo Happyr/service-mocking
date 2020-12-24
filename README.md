@@ -56,7 +56,6 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class MyTest extends WebTestCase
 {
-
     public function testFoo()
     {
         // ...
@@ -86,6 +85,7 @@ class MyTest extends WebTestCase
         ServiceMock::clear($apiClient, 'show');
     }
 }
+```
 
 ## Internal
 

@@ -34,7 +34,7 @@ class ServiceMock
     }
 
     /**
-     * Remove all functions related to $methodName. 
+     * Remove all functions related to $methodName.
      */
     public static function clear($proxy, string $methodName): void
     {
@@ -46,17 +46,20 @@ class ServiceMock
     /**
      * @param LazyLoadingInterface $proxy
      */
-    private static function initializeProxy($proxy)
+    public static function initializeProxy($proxy)
     {
         if (!$proxy instanceof LazyLoadingInterface) {
             throw new \InvalidArgumentException(\sprintf('Object of class "%s" is not a proxy. Did you mark this service correctly?', get_class($proxy)));
         }
-        
+
         $key = spl_object_hash($proxy);
         if (isset(self::$definitions[$key])) {
             $definition = self::$definitions[$key];
         } else {
             $definition = self::$definitions[$key] = new ProxyDefinition($proxy->getWrappedValueHolderValue());
+        }
+
+        if ($proxy->getProxyInitializer() === null) {
             $initializer = function (&$wrappedObject, LazyLoadingInterface $proxy, $calledMethod, array $parameters, &$nextInitializer) use ($definition) {
                 $nextInitializer = null;
                 $wrappedObject = new Proxy($definition);
@@ -65,7 +68,7 @@ class ServiceMock
             };
             $proxy->setProxyInitializer($initializer);
         }
-        
+
         return $definition;
     }
 }

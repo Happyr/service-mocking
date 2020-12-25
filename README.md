@@ -91,8 +91,6 @@ class MyTest extends WebTestCase
 }
 ```
 
-
-
 ## Internal
 
 So how is this magic working?

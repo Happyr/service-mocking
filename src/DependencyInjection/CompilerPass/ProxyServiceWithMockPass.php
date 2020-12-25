@@ -43,6 +43,7 @@ class ProxyServiceWithMockPass implements CompilerPassInterface
 
             $proxy = $factory->createProxy($definition->getClass(), $initializer);
             $definition->setClass(get_class($proxy));
+            $definition->setPublic(true);
         }
     }
 }

@@ -49,6 +49,8 @@ use function substr;
  * This class generates a different constructor.
  *
  * {@inheritDoc}
+ *
+ * @interal
  */
 class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
 {

@@ -28,7 +28,7 @@ class ProxyServiceWithMockPass implements CompilerPassInterface
         \spl_autoload_register($config->getProxyAutoloader());
         $factory = new GeneratorFactory($config);
 
-        foreach ($serviceIds as $serviceId) {
+        foreach (array_unique($serviceIds) as $serviceId) {
             if ($container->hasDefinition($serviceId)) {
                 $definition = $container->getDefinition($serviceId);
             } elseif ($container->hasAlias($serviceId)) {

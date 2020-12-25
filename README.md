@@ -78,11 +78,14 @@ class MyTest extends WebTestCase
             throw new \InvalidArgument('Item cannot be deleted again');
         });
 
+        $mock = // create a PHPUnit mock or any other mock you want.
+        ServiceMock::swap(self::$container->get(MyService::class), $mock);
+
         // ...
         self::$client->request(...);
 
-        // To make sure the ServiceMock::all() is not affecting next test
-        ServiceMock::clear($apiClient, 'show');
+        // To make sure we dont use affect other tests
+        ServiceMock::resetAll();
     }
 }
 ```

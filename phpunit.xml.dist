@@ -11,6 +11,10 @@
          bootstrap="./vendor/autoload.php"
         >
 
+    <php>
+        <server name="SYMFONY_DEPRECATIONS_HELPER" value="max[self]=0" />
+    </php>
+
     <testsuites>
         <testsuite name="Test Suite">
             <directory>./tests</directory>

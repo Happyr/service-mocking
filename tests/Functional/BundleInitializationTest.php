@@ -42,7 +42,7 @@ class BundleInitializationTest extends BaseBundleTestCase
         $this->assertInstanceOf(VirtualProxyInterface::class, $service);
 
         $called = false;
-        ServiceMock::next($service, 'warmUp', function ($dir) use(&$called) {
+        ServiceMock::next($service, 'warmUp', function ($dir) use (&$called) {
             $called = true;
             $this->assertSame('foo', $dir);
         });

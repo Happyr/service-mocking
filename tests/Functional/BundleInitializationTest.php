@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Happyr\ServiceMocking\Tests\Functional;
 
 use Happyr\ServiceMocking\HappyrServiceMockingBundle;
+use Happyr\ServiceMocking\ServiceMock;
 use Nyholm\BundleTest\BaseBundleTestCase;
 use Nyholm\BundleTest\CompilerPass\PublicServicePass;
 use ProxyManager\Proxy\VirtualProxyInterface;
@@ -39,6 +40,24 @@ class BundleInitializationTest extends BaseBundleTestCase
 
         $this->assertInstanceOf(Router::class, $service);
         $this->assertInstanceOf(VirtualProxyInterface::class, $service);
+
+        $called = false;
+        ServiceMock::next($service, 'warmUp', function ($dir) use (&$called) {
+            $called = true;
+            $this->assertSame('foo', $dir);
+        });
+
+        $service->warmUp('foo');
+        $this->assertTrue($called);
+
+        $mock = $this->getMockBuilder(\stdClass::class)
+            ->disableOriginalConstructor()
+            ->addMethods(['warmUp'])
+            ->getMock();
+        $mock->expects($this->once())->method('warmUp')->willReturn(true);
+        ServiceMock::swap($service, $mock);
+
+        $this->assertTrue($service->warmUp('foo'));
     }
 
     public function testInitEmptyBundle()

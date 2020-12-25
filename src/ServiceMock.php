@@ -13,6 +13,18 @@ class ServiceMock
     private static $definitions = [];
 
     /**
+     * Proxy all method calls from $proxy to $replacement.
+     */
+    public static function swap($proxy, object $replacement): void
+    {
+        $definition = self::getDefinition($proxy);
+        $definition->swap($replacement);
+
+        // Initialize now so we can use it directly.
+        self::initializeProxy($proxy);
+    }
+
+    /**
      * Make the next call to $method name execute the $func.
      */
     public static function next($proxy, string $methodName, callable ...$func): void
@@ -39,9 +51,28 @@ class ServiceMock
     }
 
     /**
+     * Reset all services.
+     */
+    public static function resetAll(): void
+    {
+        foreach (static::$definitions as $definition) {
+            $definition->clear();
+        }
+    }
+
+    /**
+     * Reset this service.
+     */
+    public static function reset($proxy): void
+    {
+        $definition = self::getDefinition($proxy);
+        $definition->clear();
+    }
+
+    /**
      * Remove all functions related to $methodName.
      */
-    public static function clear($proxy, string $methodName): void
+    public static function resetMethod($proxy, string $methodName): void
     {
         $definition = self::getDefinition($proxy);
         $definition->removeMethod($methodName);

@@ -10,6 +10,8 @@ use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 
 /**
  * Factory responsible of producing virtual proxy instances.
+ *
+ * @interal
  */
 class GeneratorFactory extends LazyLoadingValueHolderFactory
 {

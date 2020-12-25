@@ -21,6 +21,8 @@ use function var_export;
 
 /**
  * The `__construct` implementation for lazy loading proxies.
+ *
+ * @interal
  */
 class Constructor extends MethodGenerator
 {

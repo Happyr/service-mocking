@@ -36,7 +36,7 @@ return [
 ## Configure services
 
 You need to tell the bundle what services you want to mock. That could be done with
-the service tag `happyr_service_mock` or by defining a list of service ids:
+the "`happyr_service_mock`" service tag or by defining a list of service ids:
 
 ```yaml
 # config/packages/test/happyr_service_mocking.yaml
@@ -51,6 +51,7 @@ happyr_service_mocking:
 
 ```php
 use App\AcmeApiClient;
+use App\Some\OtherService;
 use Happyr\ServiceMocking\ServiceMock;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -79,7 +80,7 @@ class MyTest extends WebTestCase
         });
 
         $mock = // create a PHPUnit mock or any other mock you want.
-        ServiceMock::swap(self::$container->get(MyService::class), $mock);
+        ServiceMock::swap(self::$container->get(OtherService::class), $mock);
 
         // ...
         self::$client->request(...);

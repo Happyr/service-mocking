@@ -6,6 +6,7 @@ namespace Happyr\ServiceMocking\Tests\Functional;
 
 use Happyr\ServiceMocking\HappyrServiceMockingBundle;
 use Happyr\ServiceMocking\ServiceMock;
+use Happyr\ServiceMocking\Tests\Resource\StatefulService;
 use Nyholm\BundleTest\BaseBundleTestCase;
 use Nyholm\BundleTest\CompilerPass\PublicServicePass;
 use ProxyManager\Proxy\VirtualProxyInterface;
@@ -58,6 +59,47 @@ class BundleInitializationTest extends BaseBundleTestCase
         ServiceMock::swap($service, $mock);
 
         $this->assertTrue($service->warmUp('foo'));
+    }
+
+    public function testRebootBundle()
+    {
+        $kernel = $this->createKernel();
+        $kernel->addConfigFile(__DIR__.'/config.yml');
+
+        $this->bootKernel();
+        $container = $this->getContainer();
+
+        $this->assertTrue($container->has(StatefulService::class));
+        $service = $container->get(StatefulService::class);
+        $service->setData('foobar');
+        $this->assertNotNull($service->getData());
+        ServiceMock::next($service, 'getData', function () {
+            return 'secret';
+        });
+
+        $this->bootKernel();
+
+        $service = $container->get(StatefulService::class);
+        $this->assertSame('secret', $service->getData());
+        $this->assertNull($service->getData());
+    }
+
+    public function testReloadRealObjectOnRebootBundle()
+    {
+        $kernel = $this->createKernel();
+        $kernel->addConfigFile(__DIR__.'/config.yml');
+
+        $this->bootKernel();
+        $container = $this->getContainer();
+
+        $this->assertTrue($container->has(StatefulService::class));
+        $service = $container->get(StatefulService::class);
+        $service->setData('foobar');
+        $this->assertNotNull($service->getData());
+        $this->bootKernel();
+
+        $service = $container->get(StatefulService::class);
+        $this->assertNull($service->getData(), 'The real service object is not reloaded on kernel reboot.');
     }
 
     public function testInitEmptyBundle()

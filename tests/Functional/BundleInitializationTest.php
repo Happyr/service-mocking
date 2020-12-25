@@ -42,7 +42,8 @@ class BundleInitializationTest extends BaseBundleTestCase
         $this->assertInstanceOf(VirtualProxyInterface::class, $service);
 
         $called = false;
-        ServiceMock::next($service, 'warmUp', function ($dir) {
+        ServiceMock::next($service, 'warmUp', function ($dir) use(&$called) {
+            $called = true;
             $this->assertSame('foo', $dir);
         });
 
@@ -51,12 +52,12 @@ class BundleInitializationTest extends BaseBundleTestCase
 
         $mock = $this->getMockBuilder(\stdClass::class)
             ->disableOriginalConstructor()
-            ->addMethods(['foo'])
+            ->addMethods(['warmUp'])
             ->getMock();
-        $mock->expects($this->once())->method('foo')->willReturn(true);
+        $mock->expects($this->once())->method('warmUp')->willReturn(true);
         ServiceMock::swap($service, $mock);
 
-        $this->assertTrue($serice->foo());
+        $this->assertTrue($service->warmUp('foo'));
     }
 
     public function testInitEmptyBundle()

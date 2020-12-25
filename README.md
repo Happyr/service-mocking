@@ -86,9 +86,12 @@ class MyTest extends WebTestCase
 
         // To make sure we dont use affect other tests
         ServiceMock::resetAll();
+        // You can include the RestoreServiceContainer trait to automatically reset services
     }
 }
 ```
+
+
 
 ## Internal
 

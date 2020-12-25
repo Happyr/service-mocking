@@ -60,14 +60,13 @@ class ServiceMock
         }
     }
 
-
     /**
      * Reset this service.
      */
     public static function reset($proxy): void
     {
         $definition = self::getDefinition($proxy);
-        $definition->clear()
+        $definition->clear();
     }
 
     /**

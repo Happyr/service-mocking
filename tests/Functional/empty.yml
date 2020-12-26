@@ -1,0 +1,4 @@
+services:
+
+    Happyr\ServiceMocking\Tests\Resource\ExampleService:
+        public: true

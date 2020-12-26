@@ -2,6 +2,12 @@
 
 The change log describes what is "Added", "Removed", "Changed" or "Fixed" between each release.
 
+## 0.1.3
+
+### Changed
+
+- The real object is updated whenever a proxy is initialized.
+
 ## 0.1.2
 
 ### Changed

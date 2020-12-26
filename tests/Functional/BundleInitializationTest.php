@@ -79,6 +79,7 @@ class BundleInitializationTest extends BaseBundleTestCase
 
         $this->bootKernel();
 
+        $container = $this->getContainer();
         $service = $container->get(StatefulService::class);
         $this->assertSame('secret', $service->getData());
         $this->assertNull($service->getData());
@@ -98,6 +99,7 @@ class BundleInitializationTest extends BaseBundleTestCase
         $this->assertNotNull($service->getData());
         $this->bootKernel();
 
+        $container = $this->getContainer();
         $service = $container->get(StatefulService::class);
         $this->assertNull($service->getData(), 'The real service object is not reloaded on kernel reboot.');
     }

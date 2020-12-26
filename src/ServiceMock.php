@@ -81,6 +81,7 @@ class ServiceMock
 
     /**
      * This method is called in the proxy's constructor.
+     *
      * @internal
      */
     public static function initializeProxy(LazyLoadingInterface $proxy): void

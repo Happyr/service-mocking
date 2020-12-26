@@ -84,8 +84,11 @@ class MyTest extends WebTestCase
 
         // ...
         self::$client->request(...);
+    }
 
-        // To make sure we dont use affect other tests
+    protected function tearDown(): void
+    {
+        // To make sure we don't affect other tests
         ServiceMock::resetAll();
         // You can include the RestoreServiceContainer trait to automatically reset services
     }

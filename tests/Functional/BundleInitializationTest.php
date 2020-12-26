@@ -9,7 +9,6 @@ use Happyr\ServiceMocking\ServiceMock;
 use Happyr\ServiceMocking\Tests\Resource\ExampleService;
 use Happyr\ServiceMocking\Tests\Resource\StatefulService;
 use Nyholm\BundleTest\BaseBundleTestCase;
-use Nyholm\BundleTest\CompilerPass\PublicServicePass;
 use ProxyManager\Proxy\VirtualProxyInterface;
 
 class BundleInitializationTest extends BaseBundleTestCase

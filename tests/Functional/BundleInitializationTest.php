@@ -6,19 +6,13 @@ namespace Happyr\ServiceMocking\Tests\Functional;
 
 use Happyr\ServiceMocking\HappyrServiceMockingBundle;
 use Happyr\ServiceMocking\ServiceMock;
+use Happyr\ServiceMocking\Tests\Resource\ExampleService;
+use Happyr\ServiceMocking\Tests\Resource\StatefulService;
 use Nyholm\BundleTest\BaseBundleTestCase;
-use Nyholm\BundleTest\CompilerPass\PublicServicePass;
 use ProxyManager\Proxy\VirtualProxyInterface;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
 
 class BundleInitializationTest extends BaseBundleTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->addCompilerPass(new PublicServicePass('|router|'));
-    }
-
     protected function getBundleClass()
     {
         return HappyrServiceMockingBundle::class;
@@ -35,29 +29,74 @@ class BundleInitializationTest extends BaseBundleTestCase
         // Get the container
         $container = $this->getContainer();
 
-        $this->assertTrue($container->has('router'));
-        $service = $container->get('router');
+        $this->assertTrue($container->has(ExampleService::class));
+        $service = $container->get(ExampleService::class);
 
-        $this->assertInstanceOf(Router::class, $service);
+        $this->assertInstanceOf(ExampleService::class, $service);
         $this->assertInstanceOf(VirtualProxyInterface::class, $service);
 
         $called = false;
-        ServiceMock::next($service, 'warmUp', function ($dir) use (&$called) {
+        ServiceMock::next($service, 'getNumber', function ($dir) use (&$called) {
             $called = true;
-            $this->assertSame('foo', $dir);
+            $this->assertSame(11, $dir);
+
+            return 17;
         });
 
-        $service->warmUp('foo');
+        $this->assertSame(17, $service->getNumber(11));
         $this->assertTrue($called);
 
         $mock = $this->getMockBuilder(\stdClass::class)
             ->disableOriginalConstructor()
-            ->addMethods(['warmUp'])
+            ->addMethods(['getNumber'])
             ->getMock();
-        $mock->expects($this->once())->method('warmUp')->willReturn(true);
+        $mock->expects($this->once())->method('getNumber')->willReturn(2);
         ServiceMock::swap($service, $mock);
 
-        $this->assertTrue($service->warmUp('foo'));
+        $this->assertSame(2, $service->getNumber());
+    }
+
+    public function testRebootBundle()
+    {
+        $kernel = $this->createKernel();
+        $kernel->addConfigFile(__DIR__.'/config.yml');
+
+        $this->bootKernel();
+        $container = $this->getContainer();
+
+        $this->assertTrue($container->has(StatefulService::class));
+        $service = $container->get(StatefulService::class);
+        $service->setData('foobar');
+        $this->assertNotNull($service->getData());
+        ServiceMock::next($service, 'getData', function () {
+            return 'secret';
+        });
+
+        $this->bootKernel();
+
+        $container = $this->getContainer();
+        $service = $container->get(StatefulService::class);
+        $this->assertSame('secret', $service->getData());
+        $this->assertNull($service->getData());
+    }
+
+    public function testReloadRealObjectOnRebootBundle()
+    {
+        $kernel = $this->createKernel();
+        $kernel->addConfigFile(__DIR__.'/config.yml');
+
+        $this->bootKernel();
+        $container = $this->getContainer();
+
+        $this->assertTrue($container->has(StatefulService::class));
+        $service = $container->get(StatefulService::class);
+        $service->setData('foobar');
+        $this->assertNotNull($service->getData());
+        $this->bootKernel();
+
+        $container = $this->getContainer();
+        $service = $container->get(StatefulService::class);
+        $this->assertNull($service->getData(), 'The real service object is not reloaded on kernel reboot.');
     }
 
     public function testInitEmptyBundle()
@@ -71,9 +110,9 @@ class BundleInitializationTest extends BaseBundleTestCase
         // Get the container
         $container = $this->getContainer();
 
-        $this->assertTrue($container->has('router'));
-        $service = $container->get('router');
+        $this->assertTrue($container->has(ExampleService::class));
+        $service = $container->get(ExampleService::class);
 
-        $this->assertInstanceOf(Router::class, $service);
+        $this->assertInstanceOf(ExampleService::class, $service);
     }
 }

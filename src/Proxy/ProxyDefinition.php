@@ -21,17 +21,17 @@ class ProxyDefinition
         $this->originalObject = $originalObject;
     }
 
-    public function swap(object $replacement): void
-    {
-        $this->clear();
-        $this->replacement = $replacement;
-    }
-
     public function clear(): void
     {
         $this->methods = [];
         $this->methodsQueue = [];
         $this->replacement = null;
+    }
+
+    public function swap(object $replacement): void
+    {
+        $this->clear();
+        $this->replacement = $replacement;
     }
 
     /**
@@ -45,6 +45,14 @@ class ProxyDefinition
     public function getOriginalObject(): object
     {
         return $this->originalObject;
+    }
+
+    /**
+     * @internal
+     */
+    public function setOriginalObject($originalObject): void
+    {
+        $this->originalObject = $originalObject;
     }
 
     public function getMethodCallable(string $method): ?callable

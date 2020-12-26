@@ -1,3 +1,12 @@
 happyr_service_mocking:
     services:
-        - 'router'
+        - 'Happyr\ServiceMocking\Tests\Resource\ExampleService'
+
+services:
+
+    Happyr\ServiceMocking\Tests\Resource\ExampleService:
+        public: true
+
+    Happyr\ServiceMocking\Tests\Resource\StatefulService:
+        tags:
+            - { name: happyr_service_mock }

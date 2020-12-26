@@ -21,7 +21,7 @@ class ServiceMock
         $definition->swap($replacement);
 
         // Initialize now so we can use it directly.
-        self::initializeProxy($proxy);
+        self::addInitializer($proxy);
     }
 
     /**
@@ -35,7 +35,7 @@ class ServiceMock
         }
 
         // Initialize now so we can use it directly.
-        self::initializeProxy($proxy);
+        self::addInitializer($proxy);
     }
 
     /**
@@ -47,7 +47,7 @@ class ServiceMock
         $definition->addMethod($methodName, $func);
 
         // Initialize now so we can use it directly.
-        self::initializeProxy($proxy);
+        self::addInitializer($proxy);
     }
 
     /**
@@ -79,7 +79,20 @@ class ServiceMock
         $definition->clearMethodsQueue($methodName);
     }
 
+    /**
+     * This method is called in the proxy's constructor.
+     *
+     * @internal
+     */
     public static function initializeProxy(LazyLoadingInterface $proxy): void
+    {
+        $definition = self::getDefinition($proxy);
+        // Make sure the definition always have the latest original object.
+        $definition->setOriginalObject($proxy->getWrappedValueHolderValue());
+        self::addInitializer($proxy);
+    }
+
+    private static function addInitializer(LazyLoadingInterface $proxy): void
     {
         $initializer = function (&$wrappedObject, LazyLoadingInterface $proxy, $calledMethod, array $parameters, &$nextInitializer) {
             $nextInitializer = null;

@@ -71,7 +71,7 @@ class MyTest extends WebTestCase
 
         // For only the next call to $apiClient->delete()
         ServiceMock::next($apiClient, 'delete', function () {
-            return true
+            return true;
         });
 
         // This will queue a new callable for $apiClient->delete()
@@ -100,7 +100,7 @@ class MyTest extends WebTestCase
 So how is this magic working?
 
 When the container is built a new proxy class is generated from your service definition.
-The proxy class acts and behaves just as the original. But on each method call if
+The proxy class acts and behaves just as the original. But on each method call it
 checks the `ProxyDefinition` if a custom behavior have been added.
 
 With help from static properties, the `ProxyDefinition` will be remembered even if
@@ -108,5 +108,5 @@ the Kernel is rebooted.
 
 ## Limitations
 
-This trick will not work if you have two different PHP processes, ie you are running
+This trick will not work if you have two different PHP processes, i.e. you are running
 your tests with Panther, Selenium etc.

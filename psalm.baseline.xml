@@ -5,4 +5,38 @@
       <code>getWrappedValueHolderValue</code>
     </UndefinedInterfaceMethod>
   </file>
+  <file src="vendor/laminas/laminas-code/src/Generator/ClassGenerator.php">
+    <ParseError occurrences="6">
+      <code>$interface</code>
+      <code>$interface</code>
+      <code>)</code>
+      <code>)</code>
+      <code>fn</code>
+      <code>fn</code>
+    </ParseError>
+  </file>
+  <file src="vendor/laminas/laminas-code/src/Generator/TypeGenerator.php">
+    <ParseError occurrences="13">
+      <code>$left</code>
+      <code>$type</code>
+      <code>$type</code>
+      <code>$type</code>
+      <code>)</code>
+      <code>)</code>
+      <code>)</code>
+      <code>)</code>
+      <code>,</code>
+      <code>,</code>
+      <code>,</code>
+      <code>fn</code>
+      <code>fn</code>
+    </ParseError>
+  </file>
+  <file src="vendor/laminas/laminas-code/src/Generator/TypeGenerator/AtomicType.php">
+    <ParseError occurrences="3">
+      <code>$type</code>
+      <code>)</code>
+      <code>fn</code>
+    </ParseError>
+  </file>
 </files>

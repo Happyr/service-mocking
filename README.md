@@ -109,4 +109,4 @@ the Kernel is rebooted.
 ## Limitations
 
 This trick will not work if you have two different PHP processes, i.e. you are running
-your tests with Panther, Selenium etc.
+your tests with Panther, Selenium etc. or if your service is final.

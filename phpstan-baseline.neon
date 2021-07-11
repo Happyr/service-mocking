@@ -1,7 +1,7 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Parameter \\#1 \\$autoload_function of function spl_autoload_register expects callable\\(string\\)\\: void, ProxyManager\\\\Autoloader\\\\AutoloaderInterface given\\.$#"
+			message: "#^Parameter \\#1 \\$callback of function spl_autoload_register expects \\(callable\\(string\\)\\: void\\)\\|null, ProxyManager\\\\Autoloader\\\\AutoloaderInterface given\\.$#"
 			count: 1
 			path: src/DependencyInjection/CompilerPass/ProxyServiceWithMockPass.php
 

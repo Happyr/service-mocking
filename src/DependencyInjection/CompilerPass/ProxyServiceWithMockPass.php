@@ -32,7 +32,7 @@ class ProxyServiceWithMockPass implements CompilerPassInterface
             if ($container->hasDefinition($serviceId)) {
                 $definition = $container->getDefinition($serviceId);
             } elseif ($container->hasAlias($serviceId)) {
-                $definition = $container->getDefinition($container->getAlias($serviceId));
+                $definition = $container->getDefinition($container->getAlias($serviceId)->__toString());
             } else {
                 throw new \LogicException(sprintf('[HappyrServiceMocking] Service or alias with id "%s" does not exist.', $serviceId));
             }

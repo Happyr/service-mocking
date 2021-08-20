@@ -2,6 +2,17 @@
 
 The change log describes what is "Added", "Removed", "Changed" or "Fixed" between each release.
 
+## 0.2.0
+
+### Added
+
+- Support for services created with factories
+- Support for Symfony 6
+
+### Changed
+
+- All proxied services are lazy
+
 ## 0.1.3
 
 ### Changed

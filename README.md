@@ -39,7 +39,7 @@ You need to tell the bundle what services you want to mock. That could be done w
 the "`happyr_service_mock`" service tag or by defining a list of service ids:
 
 <details>
-<summary>PHP config</summary>
+<summary>PHP config (Symfony 5.3)</summary>
 <br>
 
 ```php
@@ -87,7 +87,9 @@ class MyTest extends WebTestCase
     {
         // ...
 
-        $apiClient = self::$container->get(AcmeApiClient::class);
+        $apiClient = self::getContainer()->get(AcmeApiClient::class);
+        // On Symfony < 5.3
+        // $apiClient = self::$container->get(AcmeApiClient::class);
 
         // For all calls to $apiClient->show()
         ServiceMock::all($apiClient, 'show', function ($id) {
@@ -106,7 +108,7 @@ class MyTest extends WebTestCase
         });
 
         $mock = // create a PHPUnit mock or any other mock you want.
-        ServiceMock::swap(self::$container->get(OtherService::class), $mock);
+        ServiceMock::swap(self::getContainer()->get(OtherService::class), $mock);
 
         // ...
         self::$client->request(...);

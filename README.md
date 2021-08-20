@@ -140,3 +140,23 @@ This trick will not work if you have two different PHP processes, i.e. you are r
 your tests with Panther, Selenium etc.
 
 We can also not create a proxy if your service is final.
+
+We only able to mock direct access to a service. Indirect method calls are not mocked.
+Example:
+
+```php
+class MyService {
+    public function foo()
+    {
+        return $this->bar();
+    }
+
+    public function bar()
+    {
+        return 'original';
+    }
+}
+```
+
+If we mock `MyService::bar()` to return `"mocked"`. You will still get `"orignal"`
+when you call `MyService::foo()`. The workaround is to mock `MyService::foo()` too.

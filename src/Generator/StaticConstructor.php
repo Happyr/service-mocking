@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Happyr\ServiceMocking\Generator;
 
-use Laminas\Code\Generator\ParameterGenerator;
 use Laminas\Code\Generator\Exception\InvalidArgumentException;
+use Laminas\Code\Generator\ParameterGenerator;
 use Laminas\Code\Generator\PropertyGenerator;
 use ProxyManager\Generator\MethodGenerator;
-
 
 /**
  * The `__construct_with_factory` implementation for lazy loading proxies. This

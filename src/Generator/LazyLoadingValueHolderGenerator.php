@@ -104,6 +104,7 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
                 [
                     new StaticProxyConstructor($initializer, Properties::fromReflectionClass($originalClass)),
                     Constructor::generateMethod($originalClass, $valueHolder), // Not a standard constructor
+                    StaticConstructor::generateMethod($valueHolder), // Not a standard constructor
                     new MagicGet($originalClass, $initializer, $valueHolder, $publicProperties),
                     new MagicSet($originalClass, $initializer, $valueHolder, $publicProperties),
                     new MagicIsset($originalClass, $initializer, $valueHolder, $publicProperties),

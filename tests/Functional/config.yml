@@ -1,6 +1,7 @@
 happyr_service_mocking:
     services:
         - 'Happyr\ServiceMocking\Tests\Resource\ExampleService'
+        - 'Happyr\ServiceMocking\Tests\Resource\ServiceWithFactory'
 
 services:
 
@@ -10,3 +11,7 @@ services:
     Happyr\ServiceMocking\Tests\Resource\StatefulService:
         tags:
             - { name: happyr_service_mock }
+
+    Happyr\ServiceMocking\Tests\Resource\ServiceWithFactory:
+        factory: [Happyr\ServiceMocking\Tests\Resource\ServiceWithFactory, create]
+        arguments: [6,3]

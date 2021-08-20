@@ -6,8 +6,8 @@ namespace Happyr\ServiceMocking\Tests\Resource;
 
 class ServiceWithFactory
 {
-    private int $number;
-    private int $secretNumber;
+    private $number;
+    private $secretNumber;
 
     public function __construct(int $number)
     {

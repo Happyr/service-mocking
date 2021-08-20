@@ -148,7 +148,7 @@ Example:
 class MyService {
     public function foo()
     {
-        $this->bar();
+        return $this->bar();
     }
 
     public function bar()

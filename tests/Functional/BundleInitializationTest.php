@@ -7,6 +7,7 @@ namespace Happyr\ServiceMocking\Tests\Functional;
 use Happyr\ServiceMocking\HappyrServiceMockingBundle;
 use Happyr\ServiceMocking\ServiceMock;
 use Happyr\ServiceMocking\Tests\Resource\ExampleService;
+use Happyr\ServiceMocking\Tests\Resource\ServiceWithFactory;
 use Happyr\ServiceMocking\Tests\Resource\StatefulService;
 use Nyholm\BundleTest\BaseBundleTestCase;
 use ProxyManager\Proxy\VirtualProxyInterface;
@@ -54,6 +55,21 @@ class BundleInitializationTest extends BaseBundleTestCase
         ServiceMock::swap($service, $mock);
 
         $this->assertSame(2, $service->getNumber());
+
+        $serviceWithFactory = $container->get(ServiceWithFactory::class);
+        $this->assertSame(3, $serviceWithFactory->getSecretNumber());
+
+        $called = false;
+        ServiceMock::next($serviceWithFactory, 'getNumber', function ($dir) use (&$called) {
+            $called = true;
+            $this->assertSame(11, $dir);
+
+            return 17;
+        });
+
+        $this->assertSame(17, $service->getNumber(11));
+        $this->assertTrue($called);
+        $this->assertSame(14, $service->getNumber(11));
     }
 
     public function testRebootBundle()

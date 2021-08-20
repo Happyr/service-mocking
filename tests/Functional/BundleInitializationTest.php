@@ -67,9 +67,9 @@ class BundleInitializationTest extends BaseBundleTestCase
             return 17;
         });
 
-        $this->assertSame(17, $service->getNumber(11));
+        $this->assertSame(17, $serviceWithFactory->getNumber(11));
         $this->assertTrue($called);
-        $this->assertSame(14, $service->getNumber(11));
+        $this->assertSame(14, $serviceWithFactory->getNumber(11));
     }
 
     public function testRebootBundle()

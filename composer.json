@@ -34,5 +34,7 @@
         "psr-4": {
             "Happyr\\ServiceMocking\\Tests\\": "tests/"
         }
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

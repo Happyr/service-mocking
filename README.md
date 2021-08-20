@@ -42,7 +42,7 @@ the "`happyr_service_mock`" service tag or by defining a list of service ids:
 <summary>PHP config</summary>
 <br>
 
-```yaml
+```php
 <?php
 // config/packages/test/happyr_service_mocking.php
 

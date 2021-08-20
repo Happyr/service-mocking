@@ -38,6 +38,30 @@ return [
 You need to tell the bundle what services you want to mock. That could be done with
 the "`happyr_service_mock`" service tag or by defining a list of service ids:
 
+<details>
+<summary>PHP config</summary>
+<br>
+
+```php
+<?php
+// config/packages/test/happyr_service_mocking.php
+
+use Symfony\Config\HappyrServiceMockingConfig;
+
+return static function (HappyrServiceMockingConfig $config) {
+    $config->services([
+        \App\AcmeApiClient::class
+        \App\Some\OtherService::class
+    ]);
+};
+
+```
+
+</details>
+<details>
+<summary>Yaml config</summary>
+<br>
+
 ```yaml
 # config/packages/test/happyr_service_mocking.yaml
 
@@ -46,6 +70,8 @@ happyr_service_mocking:
         - 'App\AcmeApiClient'
         - 'App\Some\OtherService'
 ```
+
+</details>
 
 ## Usage
 
@@ -109,6 +135,6 @@ the Kernel is rebooted.
 ## Limitations
 
 This trick will not work if you have two different PHP processes, i.e. you are running
-your tests with Panther, Selenium etc. 
+your tests with Panther, Selenium etc.
 
 We can also not create a proxy if your service is final.

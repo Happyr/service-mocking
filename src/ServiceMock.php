@@ -55,7 +55,7 @@ class ServiceMock
      */
     public static function resetAll(): void
     {
-        foreach (static::$definitions as $definition) {
+        foreach (self::$definitions as $definition) {
             $definition->clear();
         }
     }

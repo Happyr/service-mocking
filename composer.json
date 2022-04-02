@@ -1,13 +1,13 @@
 {
     "name": "happyr/service-mocking",
-    "type": "symfony-bundle",
     "description": "Make it easy to mock services in a built container",
+    "license": "MIT",
+    "type": "symfony-bundle",
     "keywords": [
         "Symfony",
         "testing",
         "mock"
     ],
-    "license": "MIT",
     "authors": [
         {
             "name": "Tobias Nyholm",
@@ -25,6 +25,8 @@
         "nyholm/symfony-bundle-test": "^1.6",
         "symfony/phpunit-bridge": "^5.3"
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "Happyr\\ServiceMocking\\": "src/"
@@ -34,7 +36,5 @@
         "psr-4": {
             "Happyr\\ServiceMocking\\Tests\\": "tests/"
         }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    }
 }

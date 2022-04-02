@@ -6,6 +6,11 @@ parameters:
 			path: src/DependencyInjection/CompilerPass/ProxyServiceWithMockPass.php
 
 		-
+			message: "#^Parameter \\#1 \\$class of method Symfony\\\\Component\\\\DependencyInjection\\\\Definition\\:\\:setClass\\(\\) expects string\\|null, false given\\.$#"
+			count: 1
+			path: src/DependencyInjection/CompilerPass/ProxyServiceWithMockPass.php
+
+		-
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition\\:\\:children\\(\\)\\.$#"
 			count: 1
 			path: src/DependencyInjection/Configuration.php

@@ -1,40 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.8.1@f73f2299dbc59a3e6c4d66cff4605176e728ee69">
+<files psalm-version="4.22.0@fc2c6ab4d5fa5d644d8617089f012f3bb84b8703">
   <file src="src/ServiceMock.php">
     <UndefinedInterfaceMethod occurrences="1">
       <code>getWrappedValueHolderValue</code>
     </UndefinedInterfaceMethod>
   </file>
-  <file src="vendor/laminas/laminas-code/src/Generator/ClassGenerator.php">
-    <ParseError occurrences="6">
-      <code>$interface</code>
-      <code>$interface</code>
-      <code>)</code>
-      <code>)</code>
-      <code>fn</code>
-      <code>fn</code>
-    </ParseError>
-  </file>
-  <file src="vendor/laminas/laminas-code/src/Generator/TypeGenerator.php">
-    <ParseError occurrences="13">
-      <code>$left</code>
-      <code>$type</code>
-      <code>$type</code>
-      <code>$type</code>
-      <code>)</code>
-      <code>)</code>
-      <code>)</code>
-      <code>)</code>
-      <code>,</code>
-      <code>,</code>
-      <code>,</code>
-      <code>fn</code>
-      <code>fn</code>
-    </ParseError>
-  </file>
-  <file src="vendor/laminas/laminas-code/src/Generator/TypeGenerator/AtomicType.php">
+  <file src="vendor/laminas/laminas-code/src/Generator/MethodGenerator.php">
     <ParseError occurrences="3">
-      <code>$type</code>
+      <code>$item1</code>
       <code>)</code>
       <code>fn</code>
     </ParseError>

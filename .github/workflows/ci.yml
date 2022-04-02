@@ -8,11 +8,11 @@ jobs:
     strategy:
       max-parallel: 10
       matrix:
-        php: [ '7.2', '7.3', '7.4', '8.0', '8.1']
-        sf_version: [ '4.4.*', '5.4.*']
+        php: [ '8.0', '8.1']
+        sf_version: [ '5.4.*', '6.0.*']
         include:
-          - php: 8.0
-            sf_version: '6.0.*'
+          - php: 7.2
+            sf_version: '5.4.*'
 
     steps:
       - name: Set up PHP

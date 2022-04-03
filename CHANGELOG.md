@@ -2,6 +2,12 @@
 
 The change log describes what is "Added", "Removed", "Changed" or "Fixed" between each release.
 
+## 0.3.0
+
+### Fixed
+
+- Make services non-lazy to avoid "A method by name setProxyInitializer already exists in this class."
+
 ## 0.2.0
 
 ### Added

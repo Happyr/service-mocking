@@ -7,28 +7,43 @@ namespace Happyr\ServiceMocking\Tests\Functional;
 use Happyr\ServiceMocking\HappyrServiceMockingBundle;
 use Happyr\ServiceMocking\ServiceMock;
 use Happyr\ServiceMocking\Tests\Resource\ExampleService;
+use Happyr\ServiceMocking\Tests\Resource\Kernel;
 use Happyr\ServiceMocking\Tests\Resource\ServiceWithFactory;
 use Happyr\ServiceMocking\Tests\Resource\StatefulService;
-use Nyholm\BundleTest\BaseBundleTestCase;
 use ProxyManager\Proxy\VirtualProxyInterface;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\HttpKernel\KernelInterface;
 
-class BundleInitializationTest extends BaseBundleTestCase
+class BundleInitializationTest extends KernelTestCase
 {
-    protected function getBundleClass()
+    protected static function getKernelClass(): string
     {
-        return HappyrServiceMockingBundle::class;
+        return Kernel::class;
+    }
+
+    protected static function createKernel(array $options = []): KernelInterface
+    {
+        if (null !== static::$kernel) {
+            return static::$kernel;
+        }
+        /**
+         * @var Kernel $kernel
+         */
+        $kernel = parent::createKernel($options);
+        $kernel->addTestBundle(HappyrServiceMockingBundle::class);
+        $configFile = $options['config_file'] ?? 'config.yml';
+        $kernel->addTestConfig(__DIR__.'/'.$configFile);
+        unset($options['config_file']);
+
+        $kernel->handleOptions($options);
+
+        return $kernel;
     }
 
     public function testInitBundle()
     {
-        $kernel = $this->createKernel();
-        $kernel->addConfigFile(__DIR__.'/config.yml');
-
-        // Boot the kernel.
-        $this->bootKernel();
-
-        // Get the container
-        $container = $this->getContainer();
+        $kernel = self::bootKernel();
+        $container = $kernel->getContainer();
 
         $this->assertTrue($container->has(ExampleService::class));
         $service = $container->get(ExampleService::class);
@@ -74,11 +89,8 @@ class BundleInitializationTest extends BaseBundleTestCase
 
     public function testRebootBundle()
     {
-        $kernel = $this->createKernel();
-        $kernel->addConfigFile(__DIR__.'/config.yml');
-
-        $this->bootKernel();
-        $container = $this->getContainer();
+        $kernel = self::bootKernel();
+        $container = $kernel->getContainer();
 
         $this->assertTrue($container->has(StatefulService::class));
         $service = $container->get(StatefulService::class);
@@ -98,11 +110,8 @@ class BundleInitializationTest extends BaseBundleTestCase
 
     public function testReloadRealObjectOnRebootBundle()
     {
-        $kernel = $this->createKernel();
-        $kernel->addConfigFile(__DIR__.'/config.yml');
-
-        $this->bootKernel();
-        $container = $this->getContainer();
+        $kernel = self::bootKernel();
+        $container = $kernel->getContainer();
 
         $this->assertTrue($container->has(StatefulService::class));
         $service = $container->get(StatefulService::class);
@@ -117,14 +126,8 @@ class BundleInitializationTest extends BaseBundleTestCase
 
     public function testInitEmptyBundle()
     {
-        $kernel = $this->createKernel();
-        $kernel->addConfigFile(__DIR__.'/empty.yml');
-
-        // Boot the kernel.
-        $this->bootKernel();
-
-        // Get the container
-        $container = $this->getContainer();
+        $kernel = self::bootKernel(['config_file' => 'empty.yml']);
+        $container = $kernel->getContainer();
 
         $this->assertTrue($container->has(ExampleService::class));
         $service = $container->get(ExampleService::class);

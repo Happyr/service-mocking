@@ -45,7 +45,7 @@ class ProxyServiceWithMockPass implements CompilerPassInterface
             $proxy = $factory->createProxy($definition->getClass(), $initializer);
             $definition->setClass($proxyClass = get_class($proxy));
             $definition->setPublic(true);
-            $definition->setLazy(true);
+            $definition->setLazy(false);
 
             if (null !== $definition->getFactory()) {
                 $factoryMethod = $definition->getFactory();

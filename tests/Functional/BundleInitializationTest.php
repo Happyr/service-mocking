@@ -7,9 +7,9 @@ namespace Happyr\ServiceMocking\Tests\Functional;
 use Happyr\ServiceMocking\HappyrServiceMockingBundle;
 use Happyr\ServiceMocking\ServiceMock;
 use Happyr\ServiceMocking\Tests\Resource\ExampleService;
-use Happyr\ServiceMocking\Tests\Resource\Kernel;
 use Happyr\ServiceMocking\Tests\Resource\ServiceWithFactory;
 use Happyr\ServiceMocking\Tests\Resource\StatefulService;
+use Nyholm\BundleTest\TestKernel;
 use ProxyManager\Proxy\VirtualProxyInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -18,7 +18,7 @@ class BundleInitializationTest extends KernelTestCase
 {
     protected static function getKernelClass(): string
     {
-        return Kernel::class;
+        return TestKernel::class;
     }
 
     protected static function createKernel(array $options = []): KernelInterface
@@ -27,9 +27,10 @@ class BundleInitializationTest extends KernelTestCase
             return static::$kernel;
         }
         /**
-         * @var Kernel $kernel
+         * @var TestKernel $kernel
          */
         $kernel = parent::createKernel($options);
+        $kernel->setClearCacheAfterShutdown(false);
         $kernel->addTestBundle(HappyrServiceMockingBundle::class);
         $configFile = $options['config_file'] ?? 'config.yml';
         $kernel->addTestConfig(__DIR__.'/'.$configFile);

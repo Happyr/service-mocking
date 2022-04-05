@@ -141,7 +141,7 @@ your tests with Panther, Selenium etc.
 
 We can also not create a proxy if your service is final.
 
-We only able to mock direct access to a service. Indirect method calls are not mocked.
+We are only able to mock direct access to a service. Indirect method calls are not mocked.
 Example:
 
 ```php

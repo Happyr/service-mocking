@@ -2,6 +2,12 @@
 
 The change log describes what is "Added", "Removed", "Changed" or "Fixed" between each release.
 
+## 0.3.1
+
+### Fixed
+
+- Added support for mock classes with destructor
+
 ## 0.3.0
 
 ### Fixed

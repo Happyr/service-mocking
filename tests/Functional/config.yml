@@ -2,10 +2,14 @@ happyr_service_mocking:
     services:
         - 'Happyr\ServiceMocking\Tests\Resource\ExampleService'
         - 'Happyr\ServiceMocking\Tests\Resource\ServiceWithFactory'
+        - 'Happyr\ServiceMocking\Tests\Resource\ServiceWithDestructor'
 
 services:
 
     Happyr\ServiceMocking\Tests\Resource\ExampleService:
+        public: true
+
+    Happyr\ServiceMocking\Tests\Resource\ServiceWithDestructor:
         public: true
 
     Happyr\ServiceMocking\Tests\Resource\StatefulService:

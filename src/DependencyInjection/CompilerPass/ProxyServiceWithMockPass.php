@@ -11,6 +11,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class ProxyServiceWithMockPass implements CompilerPassInterface
 {
+    /**
+     * @return void
+     */
     public function process(ContainerBuilder $container)
     {
         /** @var array $serviceIds */

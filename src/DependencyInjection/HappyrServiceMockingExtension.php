@@ -8,7 +8,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 class HappyrServiceMockingExtension extends Extension
 {
     /**
-     * {@inheritdoc}
+     * @return void
      */
     public function load(array $configs, ContainerBuilder $container)
     {

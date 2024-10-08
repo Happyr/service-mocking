@@ -15,7 +15,7 @@
         }
     ],
     "require": {
-        "php": ">=7.2",
+        "php": ">=8.1",
         "friendsofphp/proxy-manager-lts": "^1.0",
         "symfony/config": "^5.4 || ^6.0",
         "symfony/dependency-injection": "^5.4 || ^6.0",
@@ -23,7 +23,7 @@
     },
     "require-dev": {
         "nyholm/symfony-bundle-test": "^2.0",
-        "symfony/phpunit-bridge": "^6.0"
+        "symfony/phpunit-bridge": "^6.4.11"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

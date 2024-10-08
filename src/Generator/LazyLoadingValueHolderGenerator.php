@@ -4,11 +4,6 @@ declare(strict_types=1);
 
 namespace Happyr\ServiceMocking\Generator;
 
-use function array_map;
-use function array_merge;
-use function func_get_arg;
-use function func_num_args;
-use InvalidArgumentException;
 use Laminas\Code\Generator\ClassGenerator;
 use Laminas\Code\Generator\MethodGenerator;
 use Laminas\Code\Reflection\MethodReflection;
@@ -37,13 +32,9 @@ use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManager\ProxyGenerator\Util\ProxiedMethodsFilter;
 use ProxyManager\ProxyGenerator\ValueHolder\MethodGenerator\GetWrappedValueHolderValue;
-use ReflectionClass;
-use ReflectionMethod;
-use function str_replace;
-use function substr;
 
 /**
- * Generator for proxies implementing {@see \ProxyManager\Proxy\VirtualProxyInterface}.
+ * Generator for proxies implementing {@see VirtualProxyInterface}.
  *
  * This is a 99% copy of ProxyManager\ProxyGenerator\LazyLoadingValueHolderGenerator.
  * This class generates a different constructor.
@@ -55,19 +46,17 @@ use function substr;
 class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
 {
     /**
-     * {@inheritDoc}
-     *
      * @return void
      *
      * @throws InvalidProxiedClassException
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      *
      * @psalm-param array{skipDestructor?: bool, fluentSafe?: bool} $proxyOptions
      */
-    public function generate(ReflectionClass $originalClass, ClassGenerator $classGenerator/* , array $proxyOptions = [] */)
+    public function generate(\ReflectionClass $originalClass, ClassGenerator $classGenerator/* , array $proxyOptions = [] */)
     {
         /** @psalm-var array{skipDestructor?: bool, fluentSafe?: bool} $proxyOptions */
-        $proxyOptions = func_num_args() >= 3 ? func_get_arg(2) : [];
+        $proxyOptions = \func_num_args() >= 3 ? \func_get_arg(2) : [];
 
         CanProxyAssertion::assertClassCanBeProxied($originalClass);
 
@@ -92,12 +81,12 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
             $excludedMethods[] = '__destruct';
         }
 
-        array_map(
+        \array_map(
             static function (MethodGenerator $generatedMethod) use ($originalClass, $classGenerator): void {
                 ClassGeneratorUtils::addMethodIfNotFinal($originalClass, $classGenerator, $generatedMethod);
             },
-            array_merge(
-                array_map(
+            \array_merge(
+                \array_map(
                     $this->buildLazyLoadingMethodInterceptor($initializer, $valueHolder, $proxyOptions['fluentSafe'] ?? false),
                     ProxiedMethodsFilter::getProxiedMethods($originalClass, $excludedMethods)
                 ),
@@ -126,9 +115,9 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
     private function buildLazyLoadingMethodInterceptor(
         InitializerProperty $initializer,
         ValueHolderProperty $valueHolder,
-        bool $fluentSafe
+        bool $fluentSafe,
     ): callable {
-        return static function (ReflectionMethod $method) use ($initializer, $valueHolder, $fluentSafe): LazyLoadingMethodInterceptor {
+        return static function (\ReflectionMethod $method) use ($initializer, $valueHolder, $fluentSafe): LazyLoadingMethodInterceptor {
             $byRef = $method->returnsReference() ? '& ' : '';
             $method = LazyLoadingMethodInterceptor::generateMethod(
                 new MethodReflection($method->getDeclaringClass()->getName(), $method->getName()),
@@ -139,11 +128,11 @@ class LazyLoadingValueHolderGenerator implements ProxyGeneratorInterface
             if ($fluentSafe) {
                 $valueHolderName = '$this->'.$valueHolder->getName();
                 $body = $method->getBody();
-                $newBody = str_replace('return '.$valueHolderName, 'if ('.$valueHolderName.' === $returnValue = '.$byRef.$valueHolderName, $body);
+                $newBody = \str_replace('return '.$valueHolderName, 'if ('.$valueHolderName.' === $returnValue = '.$byRef.$valueHolderName, $body);
 
                 if ($newBody !== $body) {
                     $method->setBody(
-                        substr($newBody, 0, -1).') {'."\n"
+                        \substr($newBody, 0, -1).') {'."\n"
                         .'    return $this;'."\n"
                         .'}'."\n\n"
                         .'return $returnValue;'

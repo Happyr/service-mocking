@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Happyr\ServiceMocking\Generator;
 
-use function array_filter;
-use function array_map;
-use function implode;
 use Laminas\Code\Generator\Exception\InvalidArgumentException;
 use Laminas\Code\Generator\PropertyGenerator;
 use Laminas\Code\Reflection\MethodReflection;
@@ -14,10 +11,6 @@ use Laminas\Code\Reflection\ParameterReflection;
 use ProxyManager\Generator\MethodGenerator;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManager\ProxyGenerator\Util\UnsetPropertiesGenerator;
-use ReflectionClass;
-use ReflectionMethod;
-use function reset;
-use function var_export;
 
 /**
  * The `__construct` implementation for lazy loading proxies.
@@ -29,7 +22,7 @@ class Constructor extends MethodGenerator
     /**
      * @throws InvalidArgumentException
      */
-    public static function generateMethod(ReflectionClass $originalClass, PropertyGenerator $valueHolder): self
+    public static function generateMethod(\ReflectionClass $originalClass, PropertyGenerator $valueHolder): self
     {
         $originalConstructor = self::getConstructor($originalClass);
 
@@ -41,7 +34,7 @@ class Constructor extends MethodGenerator
             'static $reflection;'."\n\n"
             .'if (! $this->'.$valueHolder->getName().') {'."\n"
             .'    $reflection = $reflection ?? new \ReflectionClass('
-            .var_export($originalClass->getName(), true)
+            .\var_export($originalClass->getName(), true)
             .");\n"
             .'    $this->'.$valueHolder->getName().' = $reflection->newInstanceWithoutConstructor();'."\n"
             .UnsetPropertiesGenerator::generateSnippet(Properties::fromReflectionClass($originalClass), 'this')
@@ -56,13 +49,13 @@ class Constructor extends MethodGenerator
 
     private static function generateOriginalConstructorCall(
         MethodReflection $originalConstructor,
-        PropertyGenerator $valueHolder
+        PropertyGenerator $valueHolder,
     ): string {
         return "\n\n"
             .'$this->'.$valueHolder->getName().'->'.$originalConstructor->getName().'('
-            .implode(
+            .\implode(
                 ', ',
-                array_map(
+                \array_map(
                     static function (ParameterReflection $parameter): string {
                         return ($parameter->isVariadic() ? '...' : '').'$'.$parameter->getName();
                     },
@@ -72,23 +65,23 @@ class Constructor extends MethodGenerator
             .');';
     }
 
-    private static function getConstructor(ReflectionClass $class): ?MethodReflection
+    private static function getConstructor(\ReflectionClass $class): ?MethodReflection
     {
-        $constructors = array_map(
-            static function (ReflectionMethod $method): MethodReflection {
+        $constructors = \array_map(
+            static function (\ReflectionMethod $method): MethodReflection {
                 return new MethodReflection(
                     $method->getDeclaringClass()->getName(),
                     $method->getName()
                 );
             },
-            array_filter(
+            \array_filter(
                 $class->getMethods(),
-                static function (ReflectionMethod $method): bool {
+                static function (\ReflectionMethod $method): bool {
                     return $method->isConstructor();
                 }
             )
         );
 
-        return reset($constructors) ?: null;
+        return \reset($constructors) ?: null;
     }
 }

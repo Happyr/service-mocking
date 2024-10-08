@@ -2,6 +2,16 @@
 
 The change log describes what is "Added", "Removed", "Changed" or "Fixed" between each release.
 
+## 1.0.0
+
+### Removed
+
+- Removed support for < PHP 8.1
+
+### Added
+
+- Support for Symfony 7
+
 ## 0.3.1
 
 ### Fixed

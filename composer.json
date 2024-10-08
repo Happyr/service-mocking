@@ -23,7 +23,7 @@
     },
     "require-dev": {
         "nyholm/symfony-bundle-test": "^2.0",
-        "symfony/phpunit-bridge": "^6.0 || ^7.0"
+        "symfony/phpunit-bridge": "^6.4.11 || ^7.1.4"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

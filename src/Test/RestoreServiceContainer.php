@@ -14,6 +14,7 @@ trait RestoreServiceContainer
 {
     /**
      * @internal
+     *
      * @after
      */
     public static function _restoreContainer(): void

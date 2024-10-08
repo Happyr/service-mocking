@@ -22,7 +22,7 @@
         "symfony/http-kernel": "^5.4 || ^6.0 || ^7.0"
     },
     "require-dev": {
-        "nyholm/symfony-bundle-test": "^2.0",
+        "nyholm/symfony-bundle-test": "^2.0 || ^3.0",
         "symfony/phpunit-bridge": "^6.4.11 || ^7.1.4"
     },
     "minimum-stability": "dev",

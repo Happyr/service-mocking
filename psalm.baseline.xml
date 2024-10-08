@@ -5,6 +5,11 @@
       <code><![CDATA[children]]></code>
     </UndefinedMethod>
   </file>
+  <file src="src/DependencyInjection/HappyrServiceMockingExtension.php">
+    <InternalClass>
+      <code><![CDATA[Extension]]></code>
+    </InternalClass>
+  </file>
   <file src="src/ServiceMock.php">
     <UndefinedInterfaceMethod>
       <code><![CDATA[getWrappedValueHolderValue]]></code>

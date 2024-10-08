@@ -50,8 +50,8 @@ use Symfony\Config\HappyrServiceMockingConfig;
 
 return static function (HappyrServiceMockingConfig $config) {
     $config->services([
-        \App\AcmeApiClient::class
-        \App\Some\OtherService::class
+        \App\AcmeApiClient::class,
+        \App\Some\OtherService::class,
     ]);
 };
 
@@ -88,8 +88,6 @@ class MyTest extends WebTestCase
         // ...
 
         $apiClient = self::getContainer()->get(AcmeApiClient::class);
-        // On Symfony < 5.3
-        // $apiClient = self::$container->get(AcmeApiClient::class);
 
         // For all calls to $apiClient->show()
         ServiceMock::all($apiClient, 'show', function ($id) {
